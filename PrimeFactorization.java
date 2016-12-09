@@ -1,20 +1,28 @@
 package mathematics;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
 public class PrimeFactorization {
-
-	public static void main(String[] args) {
-		factorio(27);
-	}
 	
-	public static void factorio(int t) {
+	private List<String> primeNumberList;
+
+	public PrimeFactorization() {
+		primeNumberList = new ArrayList<String>();
+	}
+
+	/**
+	 * 
+	 * @param t
+	 */
+	public PrimeFactorization calc(int t) {
 		
 		if (isPrimeNumber(t)) {
-			System.out.println(t);
-			return;
+			primeNumberList.add(String.valueOf(t));
+			return this;
 		}
 		
 		int[] o = IntStream.range(2, t + 1).toArray();
@@ -23,12 +31,25 @@ public class PrimeFactorization {
 				.filter(v -> t % v == 0 && isPrimeNumber(v)) //素数 かつ 割り切れる
 				.findFirst();
 		
-		System.out.println(d.getAsInt());
+		primeNumberList.add(String.valueOf(d.getAsInt()));
 		
-		factorio(t/d.getAsInt());
+		return calc(t/d.getAsInt());
 	}
 	
-	public static boolean isPrimeNumber(int num) {
+	/**
+	 * 
+	 * @return
+	 */
+	public List<String> getPrimeList() {
+		return this.primeNumberList;
+	}
+	
+	/**
+	 * 
+	 * @param num
+	 * @return
+	 */
+	public boolean isPrimeNumber(int num) {
 		long c = IntStream.range(2, num)
 				.filter(v -> v % 2 != 0) // 偶数排除
 				.filter(v -> num % v == 0) // 対象を割り切れる
